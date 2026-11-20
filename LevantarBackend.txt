@@ -1,0 +1,19 @@
+1. Crear el entorno virtual en raiz del repositorio (ejecutar una sola vez)
+py -m venv venv
+
+2. Activar el entorno virtual
+venv\Scripts\activate
+
+3. Actualizar pip e instalar las dependencias del backend (Ejecutar una sola vez)
+python -m pip install --upgrade pip
+python -m pip install -r .\diabetes_backend\requirements.txt
+
+4. Entrar al backend y preparar la base de datos
+cd diabetes_backend
+python manage.py migrate (ejecutar una sola vez)
+
+5. Iniciar el servidor
+python manage.py runserver
+
+# API disponible en http://127.0.0.1:8000/
+
