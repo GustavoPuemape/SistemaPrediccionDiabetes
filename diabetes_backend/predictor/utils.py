@@ -52,25 +52,25 @@ class DiabetesPredictor:
                 joblib.load(features_path)
             )
 
-            print("✅ Modelo cargado exitosamente")
+            print("[OK] Modelo cargado exitosamente")
             print(
-                f"✅ Umbral óptimo: "
+                f"[OK] Umbral óptimo: "
                 f"{self.threshold:.4f}"
             )
 
             print(
-                f"✅ Features cargadas: "
+                f"[OK] Features cargadas: "
                 f"{len(self.features)}"
             )
 
             print(
-                f"✅ Features: "
+                f"[OK] Features: "
                 f"{self.features}"
             )
 
         except Exception as e:
             print(
-                f"❌ Error al cargar el modelo: "
+                f"[ERROR] Error al cargar el modelo: "
                 f"{str(e)}"
             )
             raise
@@ -303,7 +303,7 @@ class DiabetesPredictor:
         except Exception as e:
 
             print(
-                f"❌ Error en predicción: "
+                f"[ERROR] Error en predicción: "
                 f"{str(e)}"
             )
 

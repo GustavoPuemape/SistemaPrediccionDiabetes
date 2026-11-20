@@ -13,7 +13,6 @@ def api_root(request):
             'predict': '/api/predict/',
             'predictions': '/api/predictions/',
             'stats': '/api/predictions/stats/',
-            'health': '/api/health/',
             'admin': '/admin/',
         }
     })

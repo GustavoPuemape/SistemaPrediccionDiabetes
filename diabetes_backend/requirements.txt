@@ -13,9 +13,6 @@ catboost==1.2.10
 joblib==1.5.3
 scipy==1.17.1
 
-# Utilidades
-python-dotenv==1.0.0
-
 # Producción (opcional)
 gunicorn==21.2.0
 whitenoise==6.6.0

@@ -4,7 +4,7 @@ import logging
 
 from django.db import models
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view, action
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -356,85 +356,3 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
-
-@api_view(['GET'])
-def health_check(request):
-    """
-    Endpoint para verificar el estado del servicio.
-
-    GET /api/health/
-    """
-
-    try:
-
-        # =========================================================
-        # ESTADO DEL MODELO
-        # =========================================================
-
-        model_loaded = (
-            predictor.model is not None
-        )
-
-        threshold_loaded = (
-            predictor.threshold is not None
-        )
-
-        features_loaded = (
-            predictor.features is not None
-        )
-
-        # El servicio se considera OK si todos
-        # los componentes necesarios están cargados.
-        service_ok = (
-            model_loaded and
-            threshold_loaded and
-            features_loaded
-        )
-
-        health_data = {
-            'status': 'OK' if service_ok else 'ERROR',
-
-            'model_loaded': model_loaded,
-
-            'threshold_loaded': threshold_loaded,
-
-            'features_loaded': features_loaded,
-
-            'features_count': (
-                len(predictor.features)
-                if predictor.features is not None
-                else 0
-            ),
-
-            'threshold': (
-                float(predictor.threshold)
-                if predictor.threshold is not None
-                else None
-            ),
-
-            'database': 'OK'
-        }
-
-        return Response(
-            health_data,
-            status=(
-                status.HTTP_200_OK
-                if service_ok
-                else status.HTTP_503_SERVICE_UNAVAILABLE
-            )
-        )
-
-    except Exception as e:
-
-        logger.exception(
-            f"Error en health check: {str(e)}"
-        )
-
-        return Response(
-            {
-                'status': 'ERROR',
-                'error': str(e)
-            },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
