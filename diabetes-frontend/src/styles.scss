@@ -1,0 +1,311 @@
+/* src/styles.scss - Estilos Globales */
+
+// Importar tema de Angular Material
+/* Angular Material prebuilt theme (Azure / Blue) */
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+/* ========================================
+   VARIABLES GLOBALES
+======================================== */
+:root {
+  // Colores principales
+  --primary-color: #1976d2;
+  --accent-color: #009688;
+  --warn-color: #f44336;
+
+  // Colores de riesgo
+  --risk-low: #4caf50;
+  --risk-moderate: #ffc107;
+  --risk-high: #ff9800;
+  --risk-very-high: #f44336;
+
+  // Colores neutros
+  --background: #fafafa;
+  --surface: #ffffff;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --border: #e0e0e0;
+
+  // Sombras
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+  // Espaciado
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  // Border radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  // Transiciones
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* ========================================
+   RESET Y BASE
+======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   UTILIDADES
+======================================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+
+  mat-icon {
+    color: var(--primary-color);
+  }
+}
+
+/* ========================================
+   ANIMACIONES
+======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.slide-in {
+  animation: slideIn var(--transition-normal) ease-out;
+}
+
+/* ========================================
+   COMPONENTES MATERIAL CUSTOMIZADOS
+======================================== */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-card {
+  border-radius: var(--radius-lg) !important;
+}
+
+.mat-mdc-button,
+.mat-mdc-raised-button {
+  border-radius: var(--radius-md) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: var(--risk-low);
+  }
+
+  &.error-snackbar {
+    --mdc-snackbar-container-color: var(--warn-color);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-md);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: var(--spacing-md);
+  }
+}
+
+/* ========================================
+   SCROLLBAR PERSONALIZADO
+======================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 4px;
+
+  &:hover {
+    background: #9e9e9e;
+  }
+}
+
+/* ========================================
+   CLASES DE UTILIDAD
+======================================== */
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+
+.mt-1 {
+  margin-top: var(--spacing-sm);
+}
+.mt-2 {
+  margin-top: var(--spacing-md);
+}
+.mt-3 {
+  margin-top: var(--spacing-lg);
+}
+
+.mb-1 {
+  margin-bottom: var(--spacing-sm);
+}
+.mb-2 {
+  margin-bottom: var(--spacing-md);
+}
+.mb-3 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.p-1 {
+  padding: var(--spacing-sm);
+}
+.p-2 {
+  padding: var(--spacing-md);
+}
+.p-3 {
+  padding: var(--spacing-lg);
+}
+
+.flex {
+  display: flex;
+}
+.flex-column {
+  flex-direction: column;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gap-1 {
+  gap: var(--spacing-sm);
+}
+.gap-2 {
+  gap: var(--spacing-md);
+}
+.gap-3 {
+  gap: var(--spacing-lg);
+}
+
+/* ========================================
+   IMPRESIÓN DE RESULTADO
+======================================== */
+@media print {
+  body.printing-result {
+    background: #fff;
+    overflow: visible;
+
+    .app-header,
+    .app-footer,
+    .prediction-form-container > .form-card {
+      display: none !important;
+    }
+
+    .main-content,
+    .container {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}

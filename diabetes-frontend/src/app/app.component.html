@@ -1,0 +1,63 @@
+<!-- src/app/app.component.html -->
+<div class="app-container">
+  <!-- Header -->
+  <mat-toolbar color="primary" class="app-header">
+    <div class="toolbar-content">
+      <div class="logo-section">
+        <mat-icon class="logo-icon">local_hospital</mat-icon>
+        <span class="title">{{ title }}</span>
+      </div>
+      <nav class="actions" aria-label="Navegación principal">
+        <a
+          mat-button
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <mat-icon>monitor_heart</mat-icon>
+          <span class="nav-label">Predecir</span>
+        </a>
+        <a
+          mat-button
+          routerLink="/history"
+          routerLinkActive="active"
+        >
+          <mat-icon>history</mat-icon>
+          <span class="nav-label">Historial</span>
+        </a>
+        <a
+          mat-button
+          routerLink="/stats"
+          routerLinkActive="active"
+        >
+          <mat-icon>bar_chart</mat-icon>
+          <span class="nav-label">Estadísticas</span>
+        </a>
+      </nav>
+    </div>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>
+        <mat-icon>medical_services</mat-icon>
+        Sistema de Predicción de Diabetes © {{ currentYear }}
+      </p>
+      <p class="disclaimer">
+        <mat-icon>info_outline</mat-icon>
+        <small>
+          Este sistema es una herramienta de apoyo diagnóstico. 
+          Los resultados no reemplazan una evaluación médica profesional.
+        </small>
+      </p>
+    </div>
+  </footer>
+</div>

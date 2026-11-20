@@ -1,0 +1,200 @@
+<!-- src/app/features/prediction/prediction-result/prediction-result.component.html -->
+<mat-card class="result-card fade-in" [style.border-top]="'4px solid ' + getResultColor()">
+  <article class="print-report">
+    <header class="print-report-header">
+      <div>
+        <h1>Informe de evaluación de riesgo</h1>
+        <p class="print-report-date">
+          Fecha de la predicción: {{ predictionData.created_at | date: 'dd/MM/yyyy HH:mm' }}
+        </p>
+      </div>
+      <div class="print-report-reference">
+        <span>Evaluación</span>
+        <strong>#{{ predictionData.prediction_id }}</strong>
+      </div>
+    </header>
+
+    <section class="print-result-summary" [style.border-left-color]="getResultColor()">
+      <p>Resultado de la evaluación</p>
+      <h2 [style.color]="getResultColor()">
+        {{
+          predictionData.result.prediction
+            ? 'Riesgo de diabetes detectado'
+            : 'Sin riesgo aparente de diabetes'
+        }}
+      </h2>
+      <span class="print-risk-level" [style.background]="getResultColor()">
+        {{ getRiskLevelInfo().label }} ·
+        {{ predictionData.result.probability_percentage | number: '1.1-1' }}%
+      </span>
+    </section>
+
+    <section class="print-report-section">
+      <h2>Datos clínicos evaluados</h2>
+      <dl class="print-clinical-grid">
+        <div>
+          <dt>Edad</dt>
+          <dd>{{ patientData?.age | number: '1.0-0' }} años</dd>
+        </div>
+        <div>
+          <dt>Glucosa</dt>
+          <dd>{{ patientData?.glucose | number: '1.1-2' }} mmol/L</dd>
+        </div>
+        <div>
+          <dt>Índice de masa corporal</dt>
+          <dd>{{ patientData?.bmi | number: '1.1-1' }}</dd>
+        </div>
+        <div>
+          <dt>Presión arterial</dt>
+          <dd>
+            {{ patientData?.systolic_bp | number: '1.0-0' }}/{{
+              patientData?.diastolic_bp | number: '1.0-0'
+            }}
+            mmHg
+          </dd>
+        </div>
+        <div>
+          <dt>Frecuencia cardíaca</dt>
+          <dd>{{ patientData?.pulse_rate | number: '1.0-0' }} lpm</dd>
+        </div>
+        <div>
+          <dt>Altura / peso</dt>
+          <dd>
+            {{ patientData?.height | number: '1.0-1' }} cm /
+            {{ patientData?.weight | number: '1.0-1' }} kg
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <footer class="print-report-disclaimer">
+      Este informe es una herramienta de apoyo basada en inteligencia artificial y no reemplaza el
+      diagnóstico ni la evaluación de un profesional de la salud.
+    </footer>
+  </article>
+
+  <mat-card-header>
+    <mat-card-title class="result-title">
+      <mat-icon [style.color]="getResultColor()">{{ getResultIcon() }}</mat-icon>
+      Resultado de la Evaluación
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <!-- Resultado Principal -->
+    <div class="main-result" [style.background]="getResultColor() + '15'">
+      <div class="result-badge" [style.background]="getResultColor()">
+        <mat-icon>{{ predictionData.result.prediction ? 'warning' : 'check_circle' }}</mat-icon>
+        <span>{{
+          predictionData.result.prediction ? 'PREDICCIÓN POSITIVA' : 'PREDICCIÓN NEGATIVA'
+        }}</span>
+      </div>
+
+      <div class="result-summary">
+        <h2 class="result-diagnosis" [style.color]="getResultColor()">
+          {{
+            predictionData.result.prediction
+              ? 'Riesgo de Diabetes Detectado'
+              : 'Sin Riesgo Aparente de Diabetes'
+          }}
+        </h2>
+        <p class="result-description">
+          {{ getRiskLevelInfo().description }}
+        </p>
+      </div>
+
+      <!-- Nivel de Riesgo -->
+      <div class="risk-level-display">
+        <div class="risk-chip" [style.background]="getResultColor()">
+          <mat-icon>{{ getResultIcon() }}</mat-icon>
+          <span>{{ getRiskLevelInfo().label }}</span>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Métricas -->
+    <div class="metrics-grid">
+      <!-- Gráfico de Probabilidad -->
+      <div class="metric-card chart-card">
+        <h3 class="metric-title">
+          <mat-icon>pie_chart</mat-icon>
+          Probabilidad
+        </h3>
+        <div class="chart-container">
+          <canvas #chartCanvas></canvas>
+          <div class="chart-center-text">
+            <div class="percentage" [style.color]="getResultColor()">
+              {{ predictionData.result.probability_percentage | number: '1.1-1' }}%
+            </div>
+            <div class="label">Riesgo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles Numéricos -->
+      <div class="metric-card details-card">
+        <h3 class="metric-title">
+          <mat-icon>analytics</mat-icon>
+          Detalles del Análisis
+        </h3>
+
+        <div class="detail-item">
+          <span class="detail-label">Número de Predicción:</span>
+          <span class="detail-value">#{{ predictionData.prediction_id }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Probabilidad:</span>
+          <span class="detail-value" [style.color]="getResultColor()">
+            {{ predictionData.result.probability_percentage | number: '1.2-2' }}%
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Nivel de Riesgo:</span>
+          <span class="detail-value" [style.color]="getResultColor()">
+            {{ getRiskLevelInfo().label }}
+          </span>
+        </div>
+
+        <!-- Barra de Probabilidad -->
+        <div class="probability-bar">
+          <mat-progress-bar
+            mode="determinate"
+            [value]="predictionData.result.probability_percentage"
+            [color]="predictionData.result.prediction ? 'warn' : 'primary'"
+          >
+          </mat-progress-bar>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider class="section-divider"></mat-divider>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <mat-icon>verified_user</mat-icon>
+      <p>
+        <strong>Aviso Legal:</strong> Este resultado es generado por un modelo de inteligencia
+        artificial y debe ser utilizado únicamente como herramienta de apoyo. No reemplaza el
+        diagnóstico médico profesional. Consulte siempre con un médico especialista para una
+        evaluación completa y tratamiento adecuado.
+      </p>
+    </div>
+
+    <!-- Acciones -->
+    <div class="result-actions">
+      <button mat-stroked-button (click)="printResult()">
+        <mat-icon>print</mat-icon>
+        Imprimir Resultado
+      </button>
+
+      <button mat-raised-button color="primary" (click)="onNewPrediction()">
+        <mat-icon>add</mat-icon>
+        Nueva Evaluación
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
