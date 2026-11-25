@@ -212,6 +212,83 @@
 }
 
 /* ========================================
+   EXPLICABILIDAD
+======================================== */
+.explanation-section {
+  background: #f8f9ff;
+  border: 1px solid #dfe3f7;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+}
+
+.explanation-intro {
+  color: var(--text-secondary);
+  margin: -8px 0 20px;
+  line-height: 1.5;
+}
+
+.explanation-list {
+  display: grid;
+  gap: 12px;
+}
+
+.explanation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 8px;
+  background: white;
+  border-left: 4px solid;
+
+  mat-icon {
+    flex-shrink: 0;
+  }
+}
+
+.explanation-positive {
+  border-left-color: #d9534f;
+  color: #b52b27;
+}
+
+.explanation-negative {
+  border-left-color: #4caf50;
+  color: #2e7d32;
+}
+
+.explanation-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: var(--text-primary);
+  }
+
+  span,
+  small {
+    color: var(--text-secondary);
+  }
+
+  small {
+    font-size: 0.8rem;
+  }
+}
+
+.explanation-note,
+.explanation-fidelity {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 16px 0 0;
+}
+
+.explanation-fidelity {
+  font-weight: 500;
+}
+
+/* ========================================
    AVISO IMPORTANTE
 ======================================== */
 .important-notice {

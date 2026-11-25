@@ -7,13 +7,13 @@ import {
   PredictionInput, 
   PredictionResponse, 
   PredictionHistoryResponse,
-  PredictionStats
+  PredictionStats,
+  PredictionExplanationResponse,
 } from '../models/prediction.model';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class PredictionService {
   private apiUrl = environment.apiUrl;
   private lastPredictionSubject = new BehaviorSubject<PredictionResponse | null>(null);
@@ -21,13 +21,21 @@ export class PredictionService {
 
   constructor(private http: HttpClient) {}
 
-
   predict(data: PredictionInput): Observable<PredictionResponse> {
     return this.http.post<PredictionResponse>(`${this.apiUrl}/predict/`, data)
       .pipe(
         tap(response => this.lastPredictionSubject.next(response)),
         catchError(this.handleError)
       );
+  }
+
+  /**
+   * Generates a local explanation without changing the saved prediction.
+   */
+  explain(data: PredictionInput): Observable<PredictionExplanationResponse> {
+    return this.http
+      .post<PredictionExplanationResponse>(`${this.apiUrl}/predict/explanation/`, data)
+      .pipe(catchError(this.handleError));
   }
 
   getHistory(page: number = 1, pageSize: number = 10): Observable<PredictionHistoryResponse> {

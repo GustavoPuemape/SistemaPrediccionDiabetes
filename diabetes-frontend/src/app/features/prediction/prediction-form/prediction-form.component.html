@@ -322,6 +322,7 @@
     <app-prediction-result
       [predictionData]="predictionResult"
       [patientData]="predictionForm.getRawValue()"
+      [explanationLoading]="explanationLoading"
       (newPrediction)="newPrediction()"
     >
     </app-prediction-result>

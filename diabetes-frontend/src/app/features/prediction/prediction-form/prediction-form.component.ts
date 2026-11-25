@@ -44,6 +44,7 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
   predictionForm!: FormGroup;
   isLoading = false;
   predictionResult: PredictionResponse | null = null;
+  explanationLoading = false;
   viewingHistory = false;
   private destroy$ = new Subject<void>();
 
@@ -288,7 +289,7 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
           // El BMI se recalcula solo al emitirse
           // height/weight (valueChanges), no se parchea.
 
-          this.predictionResult = {
+           this.predictionResult = {
             success: true,
 
             prediction_id: record.id,
@@ -304,7 +305,9 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
 
               risk_level: record.risk_level,
             },
-          };
+           };
+
+           this.explanationLoading = false;
 
           this.viewingHistory = true;
 
@@ -355,6 +358,7 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.predictionResult = null;
+    this.explanationLoading = false;
 
     // =======================================================
     // OBTENER DATOS DEL FORMULARIO
@@ -402,6 +406,30 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
           this.isLoading = false;
 
           this.predictionResult = response;
+          this.explanationLoading = true;
+
+          this.predictionService
+            .explain(payload)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (explanationResponse) => {
+                if (this.predictionResult?.prediction_id !== response.prediction_id) {
+                  return;
+                }
+
+                this.predictionResult = {
+                  ...this.predictionResult,
+                  result: {
+                    ...this.predictionResult.result,
+                    explanation: explanationResponse.explanation,
+                  },
+                };
+                this.explanationLoading = false;
+              },
+              error: () => {
+                this.explanationLoading = false;
+              },
+            });
 
           this.viewingHistory = false;
 
@@ -489,6 +517,7 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     });
 
     this.predictionResult = null;
+    this.explanationLoading = false;
 
     this.calculateBMI();
   }
@@ -509,6 +538,7 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     }
 
     this.predictionResult = null;
+    this.explanationLoading = false;
 
     window.scrollTo({
       top: 0,

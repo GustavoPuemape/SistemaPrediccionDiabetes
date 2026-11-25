@@ -16,6 +16,28 @@ export interface PredictionResult {
   risk_level: RiskLevel;
   threshold?: number;
   message?: string;
+  explanation?: PredictionExplanation;
+}
+
+export type ExplanationEffect = 'increases_risk' | 'decreases_risk';
+
+export interface PredictionExplanationItem {
+  feature: string;
+  condition: string;
+  weight: number;
+  effect: ExplanationEffect;
+}
+
+export interface PredictionExplanation {
+  method: string;
+  items: PredictionExplanationItem[];
+  fidelity: number;
+  note: string;
+}
+
+export interface PredictionExplanationResponse {
+  success: boolean;
+  explanation: PredictionExplanation;
 }
 
 export interface PredictionResponse {

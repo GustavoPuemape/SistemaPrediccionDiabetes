@@ -171,6 +171,61 @@
       </div>
     </div>
 
+    <!-- Explicabilidad local -->
+    <section class="explanation-section explanation-loading" *ngIf="explanationLoading && !predictionData.result.explanation">
+      <h3 class="metric-title">
+        <mat-icon>psychology</mat-icon>
+        Generando explicación de la predicción...
+      </h3>
+      <p class="explanation-intro">
+        Se están analizando los factores clínicos que influyeron en este resultado.
+      </p>
+    </section>
+
+    <section class="explanation-section" *ngIf="predictionData.result.explanation as explanation">
+      <div class="explanation-header">
+        <div>
+          <h3 class="metric-title">
+            <mat-icon>psychology</mat-icon>
+            Explicación de la predicción
+          </h3>
+          <p class="explanation-intro">
+            Factores clínicos que más influyeron en este resultado según {{ explanation.method }}.
+          </p>
+        </div>
+      </div>
+
+      <div class="explanation-list">
+        <div
+          class="explanation-item"
+          *ngFor="let item of explanation.items"
+          [class.explanation-positive]="item.effect === 'increases_risk'"
+          [class.explanation-negative]="item.effect === 'decreases_risk'"
+        >
+          <mat-icon>
+            {{ item.effect === 'increases_risk' ? 'arrow_upward' : 'arrow_downward' }}
+          </mat-icon>
+          <div class="explanation-item-content">
+            <strong>{{ item.feature }}</strong>
+            <span>{{ item.condition }}</span>
+            <small>
+              {{
+                item.effect === 'increases_risk'
+                  ? 'Contribuyó a aumentar el riesgo'
+                  : 'Contribuyó a disminuir el riesgo'
+              }}
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <p class="explanation-note">{{ explanation.note }}</p>
+      <p class="explanation-fidelity">
+        Fidelidad local de la explicación:
+        {{ explanation.fidelity * 100 | number: '1.0-1' }}%
+      </p>
+    </section>
+
     <mat-divider class="section-divider"></mat-divider>
 
     <!-- Disclaimer -->

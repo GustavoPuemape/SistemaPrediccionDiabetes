@@ -31,3 +31,5 @@ coverage/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+diabetes-frontend/.atl
+diabetes_backend/.atl

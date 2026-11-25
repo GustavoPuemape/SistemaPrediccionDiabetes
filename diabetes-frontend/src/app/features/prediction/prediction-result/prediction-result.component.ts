@@ -42,6 +42,7 @@ Chart.register(...registerables);
 export class PredictionResultComponent implements OnInit {
   @Input() predictionData!: PredictionResponse;
   @Input() patientData?: PredictionInput;
+  @Input() explanationLoading = false;
   @Output() newPrediction = new EventEmitter<void>();
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
