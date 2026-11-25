@@ -141,6 +141,22 @@ class PredictionInputSerializer(serializers.Serializer):
 # OUTPUT
 # =============================================================
 
+
+class PredictionExplanationItemSerializer(serializers.Serializer):
+    feature = serializers.CharField()
+    condition = serializers.CharField()
+    weight = serializers.FloatField()
+    effect = serializers.ChoiceField(
+        choices=['increases_risk', 'decreases_risk']
+    )
+
+
+class PredictionExplanationSerializer(serializers.Serializer):
+    method = serializers.CharField()
+    items = PredictionExplanationItemSerializer(many=True)
+    fidelity = serializers.FloatField()
+    note = serializers.CharField()
+
 class PredictionOutputSerializer(serializers.Serializer):
     """
     Serializer para la respuesta de la predicción.
@@ -177,6 +193,11 @@ class PredictionOutputSerializer(serializers.Serializer):
 
     message = serializers.CharField(
         help_text="Mensaje interpretativo de la predicción"
+    )
+
+    explanation = PredictionExplanationSerializer(
+        required=False,
+        help_text="Explicación local opcional generada por LIME"
     )
 
 

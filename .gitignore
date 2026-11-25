@@ -33,3 +33,6 @@ coverage/
 Thumbs.db
 diabetes-frontend/.atl
 diabetes_backend/.atl
+.atl
+odd
+docs

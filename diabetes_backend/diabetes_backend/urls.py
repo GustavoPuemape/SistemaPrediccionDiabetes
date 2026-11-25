@@ -11,6 +11,7 @@ def api_root(request):
         'version': '1.0',
         'endpoints': {
             'predict': '/api/predict/',
+            'explanation': '/api/predict/explanation/',
             'predictions': '/api/predictions/',
             'stats': '/api/predictions/stats/',
             'admin': '/admin/',

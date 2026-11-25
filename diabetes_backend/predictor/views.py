@@ -15,10 +15,22 @@ from .serializers import (
     PredictionModelSerializer,
     PredictionHistorySerializer
 )
+from .explainability import PredictionExplainer
 from .utils import predictor
 
 
 logger = logging.getLogger(__name__)
+
+prediction_explainer = None
+
+
+def get_prediction_explainer():
+    global prediction_explainer
+
+    if prediction_explainer is None:
+        prediction_explainer = PredictionExplainer(predictor)
+
+    return prediction_explainer
 
 
 class PredictionAPIView(APIView):
@@ -224,6 +236,44 @@ class PredictionAPIView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class PredictionExplanationAPIView(APIView):
+    """Generates an optional local explanation for an input."""
+
+    def post(self, request):
+        input_serializer = PredictionInputSerializer(data=request.data)
+
+        if not input_serializer.is_valid():
+            return Response(
+                {
+                    'success': False,
+                    'error': 'Datos de entrada inválidos',
+                    'details': input_serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        explanation = get_prediction_explainer().explain(
+            input_serializer.validated_data
+        )
+
+        if explanation is None:
+            return Response(
+                {
+                    'success': False,
+                    'error': 'La explicación no está disponible en este momento',
+                },
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        return Response(
+            {
+                'success': True,
+                'explanation': explanation,
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
