@@ -29,9 +29,6 @@ export class PredictionService {
       );
   }
 
-  /**
-   * Generates a local explanation without changing the saved prediction.
-   */
   explain(data: PredictionInput): Observable<PredictionExplanationResponse> {
     return this.http
       .post<PredictionExplanationResponse>(`${this.apiUrl}/predict/explanation/`, data)

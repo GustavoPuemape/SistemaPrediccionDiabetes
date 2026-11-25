@@ -1,4 +1,3 @@
-<!-- src/app/features/prediction/prediction-stats/prediction-stats.component.html -->
 <div class="stats-container">
 
   <mat-card class="stats-card fade-in">
@@ -9,13 +8,8 @@
         Estadísticas
       </mat-card-title>
       <div class="header-actions">
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="loadStats()"
-          [disabled]="isLoading"
-          matTooltip="Volver a cargar las estadísticas"
-        >
+        <button mat-stroked-button color="primary" (click)="loadStats()" [disabled]="isLoading"
+          matTooltip="Volver a cargar las estadísticas">
           <mat-icon>refresh</mat-icon>
           Actualizar
         </button>
@@ -23,64 +17,34 @@
     </mat-card-header>
 
     <mat-card-content>
-
-      <!-- ============================= -->
-      <!-- ESTADO DE CARGA               -->
-      <!-- ============================= -->
       <div class="state-container" *ngIf="isLoading">
         <mat-spinner diameter="48"></mat-spinner>
         <p>Cargando estadísticas…</p>
       </div>
-
-      <!-- ============================= -->
-      <!-- ESTADO DE ERROR               -->
-      <!-- ============================= -->
       <div class="state-container error-state" *ngIf="errorMsg && !isLoading">
         <mat-icon class="state-icon">error_outline</mat-icon>
         <h3>No se pudieron cargar las estadísticas</h3>
         <p>{{ errorMsg }}</p>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="loadStats()"
-        >
+        <button mat-raised-button color="primary" (click)="loadStats()">
           <mat-icon>refresh</mat-icon>
           Reintentar
         </button>
       </div>
-
-      <!-- ============================= -->
-      <!-- ESTADO VACÍO                  -->
-      <!-- ============================= -->
-      <div
-        class="state-container empty-state"
-        *ngIf="stats && !isLoading && !errorMsg && stats.total_predictions === 0"
-      >
+      <div class="state-container empty-state"
+        *ngIf="stats && !isLoading && !errorMsg && stats.total_predictions === 0">
         <mat-icon class="state-icon">folder_off</mat-icon>
         <h3>Aún no hay predicciones registradas</h3>
         <p>
           Realiza una predicción para que aparezcan
           las estadísticas del sistema.
         </p>
-        <button
-          mat-raised-button
-          color="primary"
-          routerLink="/"
-        >
+        <button mat-raised-button color="primary" routerLink="/">
           <mat-icon>add</mat-icon>
           Realizar primera predicción
         </button>
       </div>
 
-      <!-- ============================= -->
-      <!-- CONTENIDO CARGADO             -->
-      <!-- ============================= -->
-      <div
-        class="stats-content"
-        *ngIf="stats && !isLoading && !errorMsg && stats.total_predictions > 0"
-      >
-
-        <!-- KPIs -->
+      <div class="stats-content" *ngIf="stats && !isLoading && !errorMsg && stats.total_predictions > 0">
         <div class="kpi-grid">
           <div class="kpi-card">
             <h3 class="kpi-title">
@@ -115,7 +79,6 @@
           </div>
         </div>
 
-        <!-- Distribución por nivel de riesgo -->
         <mat-card class="section-card">
           <mat-card-header>
             <mat-card-title class="card-title">
@@ -129,11 +92,8 @@
               <span class="risk-label">{{ row.label }}</span>
               <span class="risk-count">{{ stats.risk_distribution[row.key] | number: '1.0-0' }}</span>
               <div class="risk-bar-track">
-                <div
-                  class="risk-bar-fill"
-                  [style.width.%]="getRiskPercentage(stats.risk_distribution[row.key])"
-                  [style.background]="row.cssVar"
-                ></div>
+                <div class="risk-bar-fill" [style.width.%]="getRiskPercentage(stats.risk_distribution[row.key])"
+                  [style.background]="row.cssVar"></div>
               </div>
               <span class="risk-percent">
                 {{ getRiskPercentage(stats.risk_distribution[row.key]) | number: '1.1-1' }}%
@@ -141,8 +101,6 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <!-- Resumen de clasificación -->
         <mat-card class="section-card">
           <mat-card-header>
             <mat-card-title class="card-title">
@@ -152,14 +110,8 @@
           </mat-card-header>
           <mat-card-content>
             <div class="summary-bar">
-              <div
-                class="summary-segment diabetic-segment"
-                [style.width.%]="stats.diabetic_percentage"
-              ></div>
-              <div
-                class="summary-segment non-diabetic-segment"
-                [style.width.%]="100 - stats.diabetic_percentage"
-              ></div>
+              <div class="summary-segment diabetic-segment" [style.width.%]="stats.diabetic_percentage"></div>
+              <div class="summary-segment non-diabetic-segment" [style.width.%]="100 - stats.diabetic_percentage"></div>
             </div>
             <div class="summary-legend">
               <div class="legend-item">

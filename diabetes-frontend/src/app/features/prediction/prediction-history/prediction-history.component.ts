@@ -1,5 +1,3 @@
-// src/app/features/prediction/prediction-history/prediction-history.component.ts
-
 import {
   Component,
   OnInit,

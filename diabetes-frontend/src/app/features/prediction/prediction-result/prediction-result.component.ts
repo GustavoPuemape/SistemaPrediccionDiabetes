@@ -1,4 +1,3 @@
-// src/app/features/prediction/prediction-result/prediction-result.component.ts
 import {
   Component,
   Input,

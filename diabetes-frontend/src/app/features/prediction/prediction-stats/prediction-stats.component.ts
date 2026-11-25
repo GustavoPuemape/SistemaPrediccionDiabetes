@@ -1,5 +1,3 @@
-// src/app/features/prediction/prediction-stats/prediction-stats.component.ts
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -12,13 +10,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { PredictionService } from '../../../core/services/prediction.service';
 import { PredictionStats, RiskDistribution } from '../../../core/models/prediction.model';
 
-/**
- * Fila de la distribución por nivel de riesgo.
- *
- * Usa el vocabulario abreviado de la tabla del historial
- * ("Bajo", "Moderado", …) con el color de la variable CSS
- * global que le corresponde.
- */
 interface RiskDistributionRow {
   key: keyof RiskDistribution;
   label: string;
@@ -90,10 +81,6 @@ export class PredictionStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Porcentaje de un nivel de riesgo sobre el total
-   * (evita división por cero).
-   */
   getRiskPercentage(count: number): number {
     if (!this.stats || this.stats.total_predictions === 0) {
       return 0;

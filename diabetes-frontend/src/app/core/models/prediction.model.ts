@@ -85,13 +85,6 @@ export const RISK_LEVELS: Record<RiskLevel, RiskLevelInfo> = {
   },
 };
 
-/**
- * Item del historial de predicciones.
- *
- * Coincide con PredictionHistorySerializer del backend:
- * id, age, glucose, bmi, prediction, probability,
- * risk_level, risk_level_display, created_at.
- */
 export interface PredictionHistory {
   id: number;
   age: number;
@@ -104,15 +97,6 @@ export interface PredictionHistory {
   created_at: string;
 }
 
-/**
- * Forma paginada DRF (count/next/previous/results).
- *
- * El backend actual NO configura paginación DRF
- * (sin DEFAULT_PAGINATION_CLASS ni pagination_class en el ViewSet),
- * por lo que GET /api/predictions/ devuelve actualmente un arreglo
- * plano. Este tipo se mantiene para tolerar un sobre paginado
- * si se habilita la paginación en el backend en el futuro.
- */
 export interface PredictionHistoryPage {
   count: number;
   next: string | null;
@@ -120,18 +104,8 @@ export interface PredictionHistoryPage {
   results: PredictionHistory[];
 }
 
-/**
- * Respuesta real de GET /api/predictions/: arreglo plano hoy,
- * o sobre paginado si el backend habilita paginación DRF.
- */
 export type PredictionHistoryResponse = PredictionHistory[] | PredictionHistoryPage;
 
-/**
- * Distribución de predicciones por nivel de riesgo.
- *
- * Claves en minúsculas, tal como las devuelve el backend
- * en la acción `stats` del ViewSet de predicciones.
- */
 export interface RiskDistribution {
   bajo: number;
   moderado: number;
@@ -139,14 +113,6 @@ export interface RiskDistribution {
   muy_alto: number;
 }
 
-/**
- * Estadísticas generales de predicciones.
- *
- * Coincide con la respuesta de la acción `stats` del backend
- * (GET /api/predictions/stats/): totales agregados, desglose
- * diabético/no diabético con su porcentaje, probabilidad
- * promedio (0-1) y distribución por nivel de riesgo.
- */
 export interface PredictionStats {
   total_predictions: number;
   diabetic_predictions: number;

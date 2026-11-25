@@ -4,18 +4,12 @@
   flex-direction: column;
 }
 
-/* ========================================
-   HEADER
-======================================== */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 
-  // Angular Material 3 paints `color="primary"` toolbars with a light surface
-  // background, but the nav links below were styled for a blue header. Without
-  // this explicit background the links render white-on-white and look missing.
   &.mat-toolbar {
     background-color: var(--primary-color);
     color: #ffffff;
@@ -76,17 +70,11 @@
   }
 }
 
-/* ========================================
-   MAIN CONTENT
-======================================== */
 .main-content {
   flex: 1;
   padding: 40px 20px;
 }
 
-/* ========================================
-   HERO SECTION
-======================================== */
 .hero-section {
   text-align: center;
   margin-bottom: 48px;
@@ -121,9 +109,6 @@
   }
 }
 
-/* ========================================
-   FOOTER
-======================================== */
 .app-footer {
   background-color: #f5f5f5;
   border-top: 1px solid #e0e0e0;
@@ -161,9 +146,6 @@
   }
 }
 
-/* ========================================
-   RESPONSIVE
-======================================== */
 @media (max-width: 768px) {
   .app-header {
     .logo-section {

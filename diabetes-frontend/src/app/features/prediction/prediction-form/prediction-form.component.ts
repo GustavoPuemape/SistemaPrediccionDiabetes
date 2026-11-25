@@ -1,5 +1,3 @@
-// src/app/features/prediction/prediction-form/prediction-form.component.ts
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -102,10 +100,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  // =========================================================
-  // CÁLCULO DEL BMI
-  // =========================================================
-
   private setupBMICalculation(): void {
     this.predictionForm
       .get('weight')
@@ -144,10 +138,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  // =========================================================
-  // VALIDACIÓN PRESIÓN
-  // =========================================================
-
   private bloodPressureValidator(group: FormGroup): { [key: string]: boolean } | null {
     const systolic = Number(group.get('systolic_bp')?.value);
 
@@ -161,10 +151,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
 
     return null;
   }
-
-  // =========================================================
-  // MENSAJES DE ERROR
-  // =========================================================
 
   getErrorMessage(fieldName: string): string {
     const field = this.predictionForm.get(fieldName);
@@ -184,10 +170,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  // =========================================================
-  // ERROR PRESIÓN
-  // =========================================================
-
   hasBloodPressureError(): boolean {
     return (
       this.predictionForm.hasError('invalidBloodPressure') &&
@@ -195,10 +177,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
       this.predictionForm.get('diastolic_bp')?.touched === true
     );
   }
-
-  // =========================================================
-  // INTERPRETACIÓN BMI
-  // =========================================================
 
   getBMIInterpretation(): string {
     const bmi = Number(this.predictionForm.get('bmi')?.value);
@@ -230,10 +208,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     return 'Obesidad III';
   }
 
-  // =========================================================
-  // COLOR BMI
-  // =========================================================
-
   getBMIColor(): string {
     const bmi = Number(this.predictionForm.get('bmi')?.value);
 
@@ -256,10 +230,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     return '#F44336';
   }
 
-  // =========================================================
-  // CARGA DESDE HISTORIAL
-  // =========================================================
-
   private loadFromHistory(id: number): void {
     this.isLoading = true;
 
@@ -279,15 +249,10 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
 
             glucose: record.glucose,
 
-            // El backend guarda la altura en metros;
-            // el formulario espera centímetros.
             height: Number((record.height * 100).toFixed(1)),
 
             weight: record.weight,
           });
-
-          // El BMI se recalcula solo al emitirse
-          // height/weight (valueChanges), no se parchea.
 
            this.predictionResult = {
             success: true,
@@ -337,10 +302,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  // =========================================================
-  // SUBMIT
-  // =========================================================
-
   onSubmit(): void {
     if (this.predictionForm.invalid) {
       this.markFormGroupTouched(this.predictionForm);
@@ -360,17 +321,9 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     this.predictionResult = null;
     this.explanationLoading = false;
 
-    // =======================================================
-    // OBTENER DATOS DEL FORMULARIO
-    // =======================================================
-
     const formData = this.predictionForm.getRawValue();
 
     const heightMeters = Number(formData.height) / 100;
-
-    // =======================================================
-    // CONSTRUIR PAYLOAD EXACTO DEL BACKEND
-    // =======================================================
 
     const payload: PredictionInput = {
       age: Number(formData.age),
@@ -391,10 +344,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     };
 
     console.log('📤 Payload enviado al backend:', payload);
-
-    // =======================================================
-    // PETICIÓN
-    // =======================================================
 
     this.predictionService
       .predict(payload)
@@ -464,19 +413,11 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  // =========================================================
-  // TOUCH
-  // =========================================================
-
   private markFormGroupTouched(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach((key) => {
       formGroup.get(key)?.markAsTouched();
     });
   }
-
-  // =========================================================
-  // SCROLL RESULTADO
-  // =========================================================
 
   private scrollToResult(): void {
     setTimeout(() => {
@@ -490,10 +431,6 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
       }
     }, 100);
   }
-
-  // =========================================================
-  // RESET
-  // =========================================================
 
   resetForm(): void {
     this.predictionForm.reset({
@@ -522,15 +459,8 @@ export class PredictionFormComponent implements OnInit, OnDestroy {
     this.calculateBMI();
   }
 
-  // =========================================================
-  // NUEVA PREDICCIÓN
-  // =========================================================
-
   newPrediction(): void {
-    // Viniendo del historial, los botones Limpiar/Realizar Predicción
-    // están ocultos porque es un registro histórico. Si sólo se borrara
-    // el resultado quedaríamos en un formulario sin poder enviar nada,
-    // así que se vuelve al formulario nuevo vacío.
+
     if (this.viewingHistory) {
       this.router.navigate(['/']);
 
