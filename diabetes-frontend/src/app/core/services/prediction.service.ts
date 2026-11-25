@@ -13,6 +13,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
+
 export class PredictionService {
   private apiUrl = environment.apiUrl;
   private lastPredictionSubject = new BehaviorSubject<PredictionResponse | null>(null);
@@ -20,9 +21,7 @@ export class PredictionService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Realiza una predicción de diabetes
-   */
+
   predict(data: PredictionInput): Observable<PredictionResponse> {
     return this.http.post<PredictionResponse>(`${this.apiUrl}/predict/`, data)
       .pipe(
@@ -31,46 +30,21 @@ export class PredictionService {
       );
   }
 
-  /**
-   * Obtiene el historial de predicciones.
-   *
-   * Nota: el backend actual no tiene paginación DRF configurada,
-   * por lo que ignora page/page_size y devuelve un arreglo plano.
-   * Se mantienen los parámetros por compatibilidad y se tipa la
-   * respuesta como unión (arreglo plano | sobre paginado).
-   */
   getHistory(page: number = 1, pageSize: number = 10): Observable<PredictionHistoryResponse> {
     return this.http.get<PredictionHistoryResponse>(`${this.apiUrl}/predictions/?page=${page}&page_size=${pageSize}`)
       .pipe(catchError(this.handleError));
   }
 
-  /**
-   * Obtiene una predicción específica por ID
-   */
   getPredictionById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/predictions/${id}/`)
       .pipe(catchError(this.handleError));
   }
 
-  /**
-   * Obtiene estadísticas generales
-   */
   getStats(): Observable<PredictionStats> {
     return this.http.get<PredictionStats>(`${this.apiUrl}/predictions/stats/`)
       .pipe(catchError(this.handleError));
   }
 
-  /**
-   * Verifica el estado del servicio
-   */
-  healthCheck(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/health/`)
-      .pipe(catchError(this.handleError));
-  }
-
-  /**
-   * Calcula el BMI automáticamente
-   */
   calculateBMI(weight: number, height: number): number {
     if (weight && height && height > 0) {
       const heightInMeters = height / 100;
@@ -79,16 +53,10 @@ export class PredictionService {
     return 0;
   }
 
-  /**
-   * Limpia la última predicción
-   */
   clearLastPrediction(): void {
     this.lastPredictionSubject.next(null);
   }
 
-  /**
-   * Manejo de errores HTTP
-   */
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido';
     
